@@ -1,6 +1,5 @@
 import re
 
-
 class Stack:
 
     def isEmpty(self, stack):
@@ -27,32 +26,50 @@ class IsBalanced(Stack):
 
     def __init__(self, string):
         self.string = string
+        self.square_skobki_open = []
+        self.square_skobki_close = []
+        self.figure_skobki_open = []
+        self.figure_skobki_close = []
+        self.circle_skobki_open = []
+        self.circle_skobki_close = []
+
+    def check_balance(self):
+        if not self.isEmpty(self.string):
+            for item in self.string:
+                if item == '[':
+                    self.square_skobki_open.append(item)
+
+                elif item == ']':
+                    self.square_skobki_close.append(item)
+
+                elif item == '{':
+                    self.figure_skobki_open.append(item)
+
+                elif item == '}':
+                    self.figure_skobki_close.append(item)
+
+                elif item == '(':
+                    self.circle_skobki_open.append(item)
+
+                elif item == ')':
+                    self.circle_skobki_close.append(item)
 
 
-    def check_balance_old(self):
-        square_open = re.findall('\[', self.string)
-        square_close = re.findall('\]', self.string)
-        figure_open = re.findall('\{', self.string)
-        figure_close = re.findall('\}', self.string)
-        circle_open = re.findall('\(', self.string)
-        circle_close = re.findall('\)', self.string)
+            if len(self.square_skobki_open) != len(self.square_skobki_close):
+                print('Несбалансированно')
 
-        if len(square_open) != len(square_close):
-            print('Несбалансированно')
+            elif len(self.figure_skobki_open) != len(self.figure_skobki_close):
+                print('Несбалансированно')
 
-        elif len(figure_open) != len(figure_close):
-            print('Несбалансированно')
+            elif len(self.circle_skobki_open) != len(self.circle_skobki_close):
+                print('Несбалансированно')
 
-        elif len(circle_open) != len(circle_close):
-            print('Несбалансированно')
-
-        else:
-            print('Сбалансированно')
-
+            else:
+                print('Сбалансированно')
 
 
 if __name__ == '__main__':
-    skobki = input('Введите последовательность скобок: ')
+    skobki = '[][}{]'
     balance = IsBalanced(skobki)
     balance.check_balance()
 
