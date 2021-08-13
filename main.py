@@ -1,12 +1,12 @@
-import re
+from collections import deque
 
 class Stack:
 
     def isEmpty(self, stack):
         if stack:
-            return False
-        else:
             return True
+        else:
+            return False
 
     def push(self, stack, new_el):
         stack = stack + list(new_el)
@@ -24,54 +24,43 @@ class Stack:
 
 class IsBalanced(Stack):
 
-    def __init__(self, string):
-        self.string = string
-        self.square_skobki_open = []
-        self.square_skobki_close = []
-        self.figure_skobki_open = []
-        self.figure_skobki_close = []
-        self.circle_skobki_open = []
-        self.circle_skobki_close = []
+    def __init__(self, skobki_list):
+        self.skobki_list = skobki_list
 
-    def check_balance(self):
-        if not self.isEmpty(self.string):
-            for item in self.string:
-                if item == '[':
-                    self.square_skobki_open.append(item)
+    def isbalance(self):
+        stack = deque()
+        skobki_dict = {
+            '{': 0,
+            '}': 0,
+            '[': 0,
+            ']': 0,
+            '(': 0,
+            ')': 0,
+        }
 
-                elif item == ']':
-                    self.square_skobki_close.append(item)
+        for item in self.skobki_list:
+            stack.append(item)
 
-                elif item == '{':
-                    self.figure_skobki_open.append(item)
+        while len(stack) != 0:
+            last_el = stack.pop()
 
-                elif item == '}':
-                    self.figure_skobki_close.append(item)
+            skobki_dict[last_el] += 1
 
-                elif item == '(':
-                    self.circle_skobki_open.append(item)
+        if skobki_dict['['] != skobki_dict[']']:
+            print('Несбалансировано')
+        elif skobki_dict['{'] != skobki_dict['}']:
+            print('Несбалансировано')
+        elif skobki_dict['('] != skobki_dict[')']:
+            print('Несбалансировано')
+        else:
+            print('Сбалансировано')
 
-                elif item == ')':
-                    self.circle_skobki_close.append(item)
-
-
-            if len(self.square_skobki_open) != len(self.square_skobki_close):
-                print('Несбалансированно')
-
-            elif len(self.figure_skobki_open) != len(self.figure_skobki_close):
-                print('Несбалансированно')
-
-            elif len(self.circle_skobki_open) != len(self.circle_skobki_close):
-                print('Несбалансированно')
-
-            else:
-                print('Сбалансированно')
 
 
 if __name__ == '__main__':
-    skobki = '[][}{]'
+    skobki = '[][{}{]'
     balance = IsBalanced(skobki)
-    balance.check_balance()
+    balance.isbalance()
 
 
 
